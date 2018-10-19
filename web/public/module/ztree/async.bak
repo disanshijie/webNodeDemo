@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+	<TITLE> ZTREE DEMO - Async</TITLE>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" href="./css/bootstrapStyle/bootstrapStyle.css" type="text/css">
+
+	<style>
+		.zTreeDemoBackground{
+			width:40%;
+		}
+		.node-desc{
+			width:80%;
+			height:auto;
+			word-wrap:break-word;
+			word-break:break-all;
+			overflow:hidden;
+			font-size:16px;
+			color:#323232;
+			font-family:"微软雅黑";
+		}
+		
+		/* 右键菜单 */
+		div#rMenu {
+			position:absolute;
+			 visibility:hidden;
+			 top:0; background-color: #555;
+			 text-align: left;
+			 padding: 2px;
+		}
+		div#rMenu ul{
+			margin: 0;
+			padding:0;
+		}
+		div#rMenu ul li{
+			margin: 1px 0;
+			padding: 0 5px;
+			cursor: pointer;
+			list-style: none outside none;
+			background-color:#ffffff;
+		}
+
+	</style>
+
+	<script src="./js/jquery.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.ztree.all.min.js"></script>
+
+	<script type="text/javascript" src="./js/async.js"></script>
+
+	<SCRIPT type="text/javascript">
+		var cacheData={};
+		var nodeDescBox="#nodeDesc";
+		var treeDemo="treeDemo";
+		var zTree, rMenu;
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#"+treeDemo), setting);
+			zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			rMenu = $("#rMenu");
+		});
+
+		var setting = {
+			view: {
+                addHoverDom: addHoverDom,
+                removeHoverDom: removeHoverDom,
+                selectedMulti: false
+            },
+			edit: {
+                enable: true
+			},
+
+            //异步获取数据
+			async: {
+                enable: true,
+               // contentType: "application/json",
+				url: "/getFileList.do",
+				autoParam: ["id","pId","name","filePath"],
+				otherParam:{"otherParam":"zTreeAsyncTest"},
+				dataFilter: ajaxDataFilter
+            },
+            data: {
+                key: {
+					title:"t"
+				},
+				simpleData: {
+					enable: true,
+					rootPId: 0
+				}
+			},
+			//(.*)?(:null.*) ----- $1(:function\(\)\{console.log\('$1'\);\},)
+            callback: {
+				beforeAsync:null,
+				beforeCheck:null,
+				beforeClick:null,
+				beforeCollapse:null,
+				beforeDblClick:null,
+				beforeDrag:null,
+				beforeDragOpen:null,
+				beforeDrop:null,
+				beforeEditName:null,
+				beforeExpand:null,
+				beforeMouseDown:null,
+				beforeMouseUp:null,
+				beforeRemove:null,
+				beforeRename:null,
+				beforeRightClick:null,
+				beforeClick: beforeClick,
+
+				onClick: nodeOnClick,
+				onExpand:onExpand,
+				onCollapse:onCollapse,
+				onRename:onRename,
+				onDrop:onDrop,
+				onDrag:onDrag,
+				onRemove:onRemove,
+				onRightClick:onRightClick,
+
+				
+				onAsyncError:function(){console.log('onAsyncError');},
+				onAsyncSuccess:function(){console.log('onAsyncSuccess');},
+				onCheck:function(){console.log('onCheck');},
+				//onCollapse:function(){console.log('onCollapse');},
+				onDblClick:function(){console.log('onDblClick');},
+				//onDrag:function(){console.log('onDrag');},
+				onDragMove:function(){console.log('onDragMove');},
+				//onDrop:function(){console.log('onDrop');},
+				//onExpand:function(){console.log('onExpand');},
+				//onMouseDown:function(){console.log('onMouseDown');},
+				//onMouseUp:function(){console.log('onMouseUp');},
+				//onNodeCreated:function(){console.log('onNodeCreated');},
+				//onRemove:function(){console.log('onRemove');},
+				//onRename:function(){console.log('onRename');},
+				//onRightClick:function(){console.log('onRightClick');},
+				
+			}
+		};
+
+        //处理async 获取到的数据-----树整个对象--父节点数据---返回结果
+		function ajaxDataFilter(treeId, parentNode, responseData) {
+            //console.log(treeId);
+            //console.log(parentNode);
+            //console.log(responseData);
+           
+            var parentPath=responseData.prevDir;
+            var nodes=responseData.zTree;
+			if (!nodes) return null;
+			for (var i=0, l=nodes.length; i<l; i++) {
+				//console.log(nodes[i]);
+                //nodes[i].name = nodes[i].name.replace(/\.n/g, '.');
+			   // nodes[i].filePath=encodeURIComponent(parentPath+"/"+nodes[i].name);
+			   if(nodes[i].pId=='0'){
+				   nodes[i].filePath=encodeURI(parentPath);
+			   }else{
+				   nodes[i].filePath=encodeURI(parentPath+"/"+nodes[i].name);
+			   }
+			}
+			if(responseData.desc){
+				var desc=responseData.desc;
+				if(!cacheData.desc){
+					cacheData.desc={};
+				}
+				if(!parentNode){parentNode={},parentNode.id='1',parentNode.pId='0'}
+				cacheData.desc[parentNode.pId+"_"+parentNode.id]=desc;
+				
+				var  desc_name=desc.name;
+				var  desc_type=desc.type;
+				$(nodeDescBox).html('<pre>'+desc.content+'</pre>');
+			}
+			return nodes;
+		}
+
+	</SCRIPT>
+</HEAD>
+
+<BODY>
+<h1>异步加载节点数据的树</h1>
+<h6>[ 文件路径: core/async.html ]</h6>
+<div class="content_wrap">
+	<div class="module-ztree">
+		<div class="zTreeDemoBackground left">
+			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+
+	</div>
+		<div id="nodeDesc" class="node-desc">
+		123tuy 
+	</div>
+	<div class="right">
+		
+	</div>
+</div>
+
+<div id="rMenu">
+	<ul>
+		<li id="m_add" onclick="addTreeNode();">增加节点</li>
+		<li id="m_del" onclick="removeTreeNode();">删除节点</li>
+		<li id="m_check" onclick="checkTreeNode(true);">Check节点</li>
+		<li id="m_unCheck" onclick="checkTreeNode(false);">unCheck节点</li>
+		<li id="m_reset" onclick="resetTree();">恢复zTree</li>
+		
+		<li id="m_refresh" onclick="refreshTree();">刷新</li>
+		<li id="m_copy" onclick="copyTree();">复制zTree</li>
+		<li id="m_copy_path" onclick="copyPathTreeNode();">复制节点路径</li>
+		<li id="m_cut" onclick="cutTree();">剪切zTree</li>
+		<li id="m_paste" onclick="pasteTree();">粘贴zTree</li>
+
+	</ul>
+</div>
+</BODY>
+</HTML>
