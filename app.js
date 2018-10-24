@@ -50,32 +50,30 @@ routes.setroute(app);
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
-    next(err);
+    console.log("进入了404");
+    res.sendStatus(404); //等于 res.status(404).send('Not Found')
+    /*
+    //看着费劲 没意义
+    res.writeHead(404, { "Content-Type": "text/plain" });
+    res.end("404 error!\n");
+    */
+    //res.send("none"); //有none输出 状态200
+    //next(err); //跳到err处理
 });
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-      res.status(err.status || 500);
-      res.render('error', {
-        message: err.message,
-        error: err
-      });
-    });
-}
 
 // 错误处理：error handler
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
+    // development error handler
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+    console.log("进入了500");
     // render the error page
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
-        error: {}
+        //error: {},
+        error: err
     });
 });
 
