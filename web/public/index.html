@@ -28,6 +28,9 @@
 
 
         </div>
+        <div>
+            <input type="button" value="登陆" onclick="login(this)">
+        </div>
     </div>
    
 </body>
@@ -52,5 +55,8 @@
 
             console.log(data);
         }),"json";
+    }
+    function login(params) {
+        window.open("/html/login","_");
     }
 </script>

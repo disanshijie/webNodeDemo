@@ -14,18 +14,34 @@ exports.setroute = function (app) {
 	app.use('/', dispatch);
   	//app.use('/api', api);
 
-  //也可以在这直接get，post
+	//也可以在这直接get，post
 	//一个get请求的路由  http://localhost:3000
 	app.get("/index", function (req, res) {
-		//定位到静态文件路径，此处eg：web/public/index.html
-		res.render("index");
+		console.log("请求路径：index");
+		//直接路径当前路径为根下
 		//res.sendfile("./web/public/common/html/404.html");
 	});
 	//又一个请求路由：http://localhost:3000/abc
 	app.get("/abc", function (req, res) {
-		//定位到views目录了 TODO view目录比public好像优先级高
+		console.log("请求路径：abc");
+		//定位到views目录了 render就是渲染views的
 		res.render("viewsIndex", {title:"育知同创" + req.path})
-  	});
+	});
+	//又一个请求路由：http://localhost:3000/test
+	app.get("/test", function (req, res) {
+		console.log("请求路径：abc");
+		//定位到views目录了 render就是渲染views的
+		res.writeHead(200,{
+			'Content-Type':'text/html'
+		});
+		var fs=require('fs');
+		fs.readFile('index.html','utf8',function(err,data){
+			if(err){
+				throw err;
+			}
+			res.end(data);
+		});
+	});
 
 }
 

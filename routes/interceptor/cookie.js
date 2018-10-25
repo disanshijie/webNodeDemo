@@ -2,7 +2,7 @@
 /**
  * 登陆cookie效验
  * 	</br>过滤user/register user/login user/logout 请求
- * 	</br>校验失败 重定向到 /user/login
+ * 	</br>校验失败 重定向到 /html/login
  * @param {*} app 
  */
 exports.userCookie = function (app) {
@@ -25,7 +25,7 @@ exports.userCookie = function (app) {
 			} else {  // 登录拦截
 				req.session.originalUrl = req.originalUrl ? req.originalUrl : null;  // 记录用户原始请求路径
 				req.flash('error', '请先登录');
-				res.redirect('/user/login');  // 将用户重定向到登录页面
+				res.redirect('/html/login');  // 将用户重定向到登录页面
 			}
 		}
 	});
