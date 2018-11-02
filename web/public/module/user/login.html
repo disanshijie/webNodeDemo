@@ -5,21 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="../../../common/css/main.css" />
-    <script src="../../../common/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="../../common/css/main.css" />
+    <script src="../../common/js/jquery.min.js"></script>
     <!-- 功能常量 -->
-    <script src="../../../common/js/base.js"></script>
+    <script src="../../common/js/base.js"></script>
     <!-- 公共方法 -->
-    <script src="../../../common/js/common.js"></script>
+    <script src="../../common/js/common.js"></script>
     <!-- 模块共用方法 -->
-    <script src="../../../common/js/extends.js"></script>
+    <script src="../../common/js/extends.js"></script>
     <!-- 页面js -->
     <script src="./login.js"></script>
     <script>
         $(document).ready(function(){
             //初始化绑定事件
             pageEventInit();
-
+            
+            test();
         });
         
     </script>
@@ -40,5 +41,14 @@
 <script>
     
     function pageEventInit(){}
+
+    function test(){
+
+        // good  !!!!!
+        const original = { a:1,b:2}
+        const copy = { ...original, c:3 }; // copy => { a:1,b:2,c:3 }
+        const { a, ...noA } = copy;  // noA => { b:2 ,c:3 }
+        console.log(copy);
+    }
 
 </script>
