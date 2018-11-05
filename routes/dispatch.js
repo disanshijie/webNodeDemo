@@ -27,8 +27,16 @@ dispatch.post('/addComment',ipLimiter,Comments.addComment);
 
 //文件操作模块
 var fs = require('../src/business/module/file/control/localAction');
-dispatch.get('/file/copy', fs.copy); //复制
-dispatch.get('/file/move', fs.move); //移动，剪切
+
+/* dispatch.get('/file/list', fs.list); //列出
+dispatch.post('/file/list', fs.list); //列出
+dispatch.get('/file/listAll', fs.listAll); //列出及子目录
+dispatch.post('/file/listAll', fs.listAll); //列出及子目录
+ */
+
+dispatch.get('/file/open', fs.open); //打开
+dispatch.post('/file/copy', fs.copy); //复制
+dispatch.post('/file/move', fs.move); //移动，剪切
 
 
 

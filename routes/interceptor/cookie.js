@@ -9,6 +9,7 @@ exports.userCookie = function (app) {
 	//cookie 登录拦截器，必须放在静态资源声明之后、路由导航之前
 	app.use(function (req, res, next) {
 		if (req.session.user) {  // 判断用户是否登录
+			//TODO  用户角色
 			next();
 		} else {
 			// 解析用户请求的路径

@@ -14,45 +14,43 @@
     <!-- 模块共用方法 -->
     <script src="../../common/js/extends.js"></script>
     <!-- 页面js -->
-    <script src="./login.js"></script>
+    <script src=""></script>
     <script>
         $(document).ready(function(){
             //初始化绑定事件
             pageEventInit();
             
-            test();
+           // test();
         });
         
     </script>
 </head>
 <body>
     <div class="">
-        <form action="/login" method="post" id="userLogin">
-            <span>用户名：</span><input type="text" name="userName" id="userName">
-            <span>密码：</span><input type="text" name="password" id="password">
-            <span></span><input type="text" name="preUrl" value="" id="">
-            <div>
-                <input type="button" value="确定" onclick="submitLogin(this)">
-            </div>
-        </form>
+       <div>
+           <input type="button" value="复制" onclick="fileCopy()">
+           <input type="button" value="打开" onclick="fileOpen()">
+           <input type="button" value="复制" onclick="fileCopy()">
+       </div>
     </div>
 </body>
 </html>
 <script>
     
     function pageEventInit(){}
+    
+    //下载/打开文件
+    function fileOpen(params) {
+        var  filePath=encodeURI('D:/opt/htmlUtil/JS_HTML格式化 - 站长工具.html');
+        // raw 默认展示 1下载，
+        window.open("/file/open?raw=1&url="+filePath,"_");
 
-    function test(){
-
-        // good  !!!!!
-        const original = { a:1,b:2}
-        const copy = { ...original, c:3 }; // copy => { a:1,b:2,c:3 }
-        const { a, ...noA } = copy;  // noA => { b:2 ,c:3 }
-        console.log(copy);
     }
-
-    function submitLogin(params) {
-        $.post(_base.getContextPath()+"/login",$("#userLogin").serializeArray(),
+    //复制
+    function fileCopy(params) {
+        $.post(_base.getContextPath()+"/file/copy",
+            {
+            },
             function(data){
                 if(data)
                 if(data.success==2){
