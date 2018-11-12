@@ -36,6 +36,17 @@ app.use(cookieParser());
 //设置public文件夹为放置静态文件的目录
 app.use(express.static(path.join(__dirname, 'web/public')));
 
+/* 
+// 设置跨域访问
+app.all('*', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");// 这里设置允许所有跨域访问
+    res.header("Access-Control-Allow-Headers", "Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By", ' 3.2.1')
+    res.header("Content-Type", "application/json;charset=utf-8");
+    next();
+});
+ */
 /**
  * 路由控制器
  */
@@ -43,6 +54,7 @@ app.use(express.static(path.join(__dirname, 'web/public')));
 app.use('/', index);  // http://localhost:3000
 app.use('/users', users);   //http://localhost:3000/users
 */
+
 var routes = require('./routes/index'); //加载路由文件
 routes.setroute(app);
 

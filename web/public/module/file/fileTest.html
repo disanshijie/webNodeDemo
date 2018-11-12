@@ -30,14 +30,35 @@
        <div>
            <input type="button" value="复制" onclick="fileCopy()">
            <input type="button" value="打开" onclick="fileOpen()">
-           <input type="button" value="复制" onclick="fileCopy()">
+           <input type="button" value="移动" onclick="fileMove()">
+           <input type="button" value="创建文件夹" onclick="fileMkdir()">
+           <input type="button" value="自定义" onclick="fileUser()">
        </div>
     </div>
 </body>
 </html>
 <script>
-    
-    function pageEventInit(){}
+
+
+    function pageEventInit(){
+        var url="http://localhost:3100/file/move/1.do";
+        var rule="/file/*/*/*.do";
+        //var rexp="/(.*)?"+rule.replace("\*","(.*)?")+"(.*)?/g";
+        //var rexp="(.*)?"+rule.replace("\*","(.*)?")+"(.*)?";
+        var reg = new RegExp("(.*)?"+rule.replace(/\*/g,"(.*)?")+"(.*)?",'g')
+
+        console.log(reg);
+
+       // var test=/(.*)?\/file\/(.*)?(.*)?/g;
+        var s1=url.replace(reg,function($0,$1,$2,$3,$4){
+            return [$2,$3,$4]
+        });
+        if(url!=s1){
+            console.log("结果"+s1);
+        }
+        console.log("结果"+s1);
+
+    }
     
     //下载/打开文件
     function fileOpen(params) {
@@ -50,15 +71,70 @@
     function fileCopy(params) {
         $.post(_base.getContextPath()+"/file/copy",
             {
+                src:encodeURI("D:/opt/JS_HTML格工具"),
+                dest:encodeURI("D:/opt/thumb")
             },
             function(data){
                 if(data)
                 if(data.success==2){
                     _common.Jalert(data.message);
                 }else if( data.success==1){
-                    window.location.href='/index.html';
+                   // window.location.href='/index.html';
                 }else{
-                    window.location.reload();
+                  //  window.location.reload();
+                }
+        });
+    }
+    //移动
+    function fileMove(params) {
+        $.post(_base.getContextPath()+"/file/move",
+            {
+                src:encodeURI("D:/opt/JS_HTML格工具"),
+                dest:encodeURI("D:/opt/thumb")
+            },
+            function(data){
+                if(data)
+                if(data.success==2){
+                    _common.Jalert(data.message);
+                }else if( data.success==1){
+                   // window.location.href='/index.html';
+                }else{
+                  //  window.location.reload();
+                }
+        });
+    }
+    //创建文件夹
+    function fileMkdir(params) {
+        $.post(_base.getContextPath()+"/file/mkdir",
+            {
+                src:encodeURI("D:/opt/JS_HTML格工具/aaa/b/ad"),
+            },
+            function(data){
+                if(data)
+                if(data.success==2){
+                    _common.Jalert(data.message);
+                }else if( data.success==1){
+                   // window.location.href='/index.html';
+                }else{
+                  //  window.location.reload();
+                }
+        });
+    }
+    //
+    function fileUser(params) {
+        $.post(_base.getContextPath()+"/file/user",
+            {
+                src:encodeURI("D:/opt/JS_HTML格工具"),
+                dest:encodeURI("D:/opt/thumb")
+            },
+            function(data){
+                if(data)
+                if(data.success==2){
+                    _common.Jalert(data.message);
+                }else if( data.success==1){
+                   // window.location.href='/index.html';
+                }else{
+                  //  window.location.reload();
                 }
         });
     }

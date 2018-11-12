@@ -28,6 +28,7 @@
     "express": "latest",
     "express-rate-limit": "^3.2.1",
     "express3-handlebars": "~0.5.0",
+    "fs-extra": "^7.0.1",
     "handlebars-runtime": "~1.0.12",
     "morgan": "^1.9.1",
     "serve-favicon": "^2.5.0"

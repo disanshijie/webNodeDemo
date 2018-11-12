@@ -1,8 +1,9 @@
 module.exports=function(res,params){
-    var result={};
+    let result={};
     result.data={};
     result.code="";
     result.msg="";
+    //result.reason="";
     result.success=0;
 
     result = Object.assign({}, result, params);
