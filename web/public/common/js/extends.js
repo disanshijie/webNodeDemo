@@ -31,7 +31,22 @@ var _extends={
             }
         });
     },
-    
+    documnetDownLoad: function(url,params){
+        var form = $("<form target='_self'></form>")
+       form.attr('action',url);
+       form.attr('method','post');
+       var input="";
+       if(params){
+              for(var k in params){
+               input +=' <input name="'+k+'" type="hidden" value="'+params[k]+'">';
+              }
+        }
+       form.append(input);
+       form.appendTo("body",document);
+       form.css('display','none');
+       form.submit();
+       form.remove();
+   }
 }
 
 

@@ -5,6 +5,40 @@ const resultMap=require(path.join(src, './util/domain/returnJson.js'));
 const fs = require('fs');
 const fse = require('fs-extra');
 
+const StreamDownload = require('../zutil/download');
+
+//=======================================================================
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} config 
+ */
+exports.downloadfile=(req,res,config) =>{
+    let rdata={};
+    let params = req.body;
+    let src=params.src;
+    let fileName=params.fileName;
+    let way=params.way;
+    console.log("Action-downloadfile");
+    if(!src){
+        resultMap(res,{msg:"参数错误"});
+        return;
+    }
+    src=decodeURI(src);
+    fileName=decodeURI(fileName);
+
+    // 调用下载
+    downloadFile.simple(
+        res,
+        {
+        originalPath:src,
+        fileName:fileName,
+        way:way||2
+        }
+    );
+}
+
 exports.writefile=(req,res) =>{
     let rdata={};
     let params = req.body;
@@ -31,7 +65,7 @@ exports.writefile=(req,res) =>{
 };
 
 //下载图片文件，返回Base64
-downloadBase64Img=(req,res,config) =>{
+exports.downloadBase64Img=(req,res,config) =>{
     var responseBody = {};
     let params = req.body;
     let src=params.src;
@@ -55,6 +89,5 @@ downloadBase64Img=(req,res,config) =>{
             msg:'没有此文件'
         };
     }
-    
     resultMap(res,responseBody);
 }

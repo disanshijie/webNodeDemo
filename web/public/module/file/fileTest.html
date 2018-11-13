@@ -33,6 +33,7 @@
            <input type="button" value="移动" onclick="fileMove()">
            <input type="button" value="创建文件夹" onclick="fileMkdir()">
            <input type="button" value="自定义" onclick="fileUser()">
+           <input type="button" value="xiazai" onclick="fileDownload()">
        </div>
     </div>
 </body>
@@ -119,6 +120,17 @@
                   //  window.location.reload();
                 }
         });
+    }
+    
+    //下载文件
+    function fileDownload(params) {
+        _extends.documnetDownLoad(
+            _base.getContextPath()+"/file/downloadfile",
+            {
+                src:encodeURI("D:/opt/JS_HTML格工具/分团软件.rar"),
+                fileName:encodeURI("分团软件.rar")
+            },
+        );
     }
     //
     function fileUser(params) {
