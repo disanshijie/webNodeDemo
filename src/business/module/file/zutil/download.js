@@ -51,3 +51,18 @@ function downloadFileSimple(res,params){
 };
 
 exports.simple = downloadFileSimple;
+
+/* 
+//第一种方式
+let road="这里是要下载的文件路径（可以是中文，相对路径，绝对路径等等）";
+res.download(road); //直接调用download方法即可
+
+//第二种方式
+let road="这里是要下载的文件路径（可以是中文，相对路径，绝对路径等等）";
+let road = fs.createReadStream(path); //创建输入流入口
+res.writeHead(200, {
+  'Content-Type': 'application/force-download',
+  'Content-Disposition': 'attachment; filename=name'
+});
+load.pipe(res);// 通过管道方式写入
+ */

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../../common/css/main.css" />
+    <script src="../../common/js/jquery.min.js"></script>
+    <!-- 功能常量 -->
+    <script src="../../common/js/base.js"></script>
+    <!-- 公共方法 -->
+    <script src="../../common/js/common.js"></script>
+    <!-- 模块共用方法 -->
+    <script src="../../common/js/extends.js"></script>
+    <!-- 页面js -->
+    <script src=""></script>
+    <script>
+        $(document).ready(function(){
+            //初始化绑定事件
+            pageEventInit();
+            
+           // test();
+        });
+        
+    </script>
+</head>
+<body>
+    <div>
+        <form id="addForm" enctype="multipart/form-data">
+            <fieldset>
+                <h3>创建用户</h3>
+                姓名：<input type="text" name="name" placeholder="请输入姓名"/>
+                <br> <br>
+                头像：<input type="file" name="icon" multiple="multiple">
+                <br> <br>
+                <input type="button" onclick="submit1()" value="提交（formidable处理）"/>
+                <input type="button" onclick="submit2()" value="提交（multiparty处理）"/>
+                <br> <br>
+            </fieldset>
+        </form>
+    </div>
+
+    <div>
+        <h3>上传文件--form表单</h3>
+        <form method='post' action='/api/remote/uploadfile' enctype='multipart/form-data'>
+            <input type="file" name="inputFile">
+            <input type="submit" value="上传">
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    function pageEventInit(){}
+
+    function submit2(){
+    var data = new FormData($('#addForm')[0]);
+    ajaxFormPost("/api/remote/uploadfile",data,function(data){
+        console.log("multiparty处理结果:",data);
+        alert(data.code+":"+data.msg);
+    });
+}
+//ajax Post方法封装
+function ajaxFormPost(url,formData,callBack){
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        processData: false,  // 告诉JSLite不要去处理发送的数据
+        contentType: false,   // 告诉JSLite不要去设置Content-Type请求头
+        data:formData,
+        url:url,
+        success:function(data){
+            data = JSON.parse(data);
+            callBack(data);
+        },
+        error:function(data){
+            console.log('error:',data)
+            callBack(data);
+        }
+    });
+}
+</script>

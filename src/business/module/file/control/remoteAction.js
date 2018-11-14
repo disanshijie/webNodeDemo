@@ -4,7 +4,10 @@ const resultMap=require(path.join(src, './util/domain/returnJson.js'));
 
 const fs = require('fs');
 const fse = require('fs-extra');
-
+//文件上传
+const async = require('async');
+const uploadClient = require('../zutil/upload');
+//下载
 const StreamDownload = require('../zutil/download');
 
 //=======================================================================
@@ -12,7 +15,7 @@ const StreamDownload = require('../zutil/download');
  * 
  * @param {*} req 
  * @param {*} res 
- * @param {*} config 
+ * @param {*} config
  */
 exports.downloadfile=(req,res,config) =>{
     let rdata={};
@@ -28,6 +31,7 @@ exports.downloadfile=(req,res,config) =>{
     src=decodeURI(src);
     fileName=decodeURI(fileName);
 
+    /*     
     // 调用下载
     downloadFile.simple(
         res,
@@ -37,6 +41,25 @@ exports.downloadfile=(req,res,config) =>{
         way:way||2
         }
     );
+    */
+    //express自带的下载 eg:res.dowmload(path,[filename],[fn])
+    res.download('app-release.apk',(err) =>{
+        if(err){
+            console.log(err);
+            //下载错误 TODO
+        }
+    });
+}
+
+exports.uploadfile=(req,res,config) =>{
+    // 表单解析
+    uploadClient.multipartyFormParse(req,function(err,datas){  
+        if(err){
+            resultMap(res,{"msg":"上传失败"});
+            return;
+        }
+        resultMap(res,{"msg":"上传成功"});
+    });
 }
 
 exports.writefile=(req,res) =>{
@@ -91,3 +114,4 @@ exports.downloadBase64Img=(req,res,config) =>{
     }
     resultMap(res,responseBody);
 }
+

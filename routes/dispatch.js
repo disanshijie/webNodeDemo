@@ -38,7 +38,7 @@ dispatch.get('/file/open', fs.open); //打开
 dispatch.post('/file/copy', fs.copy); //复制
 dispatch.post('/file/move', fs['move']); //移动，剪切
 
-dispatch.post('/file/*',function (req,res) {
+dispatch.post('/file/*',function (req,res,nest) {
     console.log(req.url);
     console.log(req.originalUrl);
     var keys=autopatch(req.url,'/file/*');
@@ -50,7 +50,8 @@ dispatch.post('/file/*',function (req,res) {
             return;
         }
     }
-    res.redirect(200, 'index.html');
+    //res.redirect(200, 'index.html');
+    nest();
 });
 dispatch.get('/file/*',function (req,res) {
     console.log(req.url);
@@ -65,5 +66,26 @@ dispatch.get('/file/*',function (req,res) {
     }
     res.redirect(200, 'index.html');
 });
+
+var remote = require('../src/business/module/file/control/remoteAction');
+
+dispatch.post('/api/remote/uploadfile',remote.uploadfile)
+/* 
+dispatch.post('/api/remote/*',function (req,res) {
+    console.log(req.url);
+    console.log(req.originalUrl);
+    var keys=autopatch(req.url,'/api/remote/*');
+    if(keys && keys[0]){
+        let fun=remote[keys[0]];
+
+        if(fun){
+            fun(req,res);
+            return;
+        }
+    }
+    res.json({success:0,msg:"错误"});
+});
+ */
+
 
 module.exports = dispatch;
