@@ -3,7 +3,7 @@ module.exports=function(res,params){
     result.data={};
     result.code="";
     result.msg="";
-    //result.reason="";
+    //result.error="";
     result.success=0;
 
     result = Object.assign({}, result, params);

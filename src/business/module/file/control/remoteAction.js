@@ -52,13 +52,16 @@ exports.downloadfile=(req,res,config) =>{
 }
 
 exports.uploadfile=(req,res,config) =>{
+    let rdata={};
+    let params = req.body;
+    //TODO 携带参数，自行处理
     // 表单解析
     uploadClient.multipartyFormParse(req,function(err,datas){  
         if(err){
-            resultMap(res,{"msg":"上传失败"});
+            resultMap(res,{msg:"上传失败",error:err});
             return;
         }
-        resultMap(res,{"msg":"上传成功"});
+        resultMap(res,{success:1,msg:"上传成功",data:datas});
     });
 }
 

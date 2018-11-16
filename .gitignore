@@ -1,7 +1,7 @@
 node_modules/
 dist/
 logs/
-
+**/temp/
 
 # Editor directories and files
 .idea

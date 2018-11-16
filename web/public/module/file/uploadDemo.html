@@ -44,7 +44,15 @@
     <div>
         <h3>上传文件--form表单</h3>
         <form method='post' action='/api/remote/uploadfile' enctype='multipart/form-data'>
+            <input type="file" name="inputFile" multiple>
+            <input type="submit" value="上传">
+        </form>
+    </div>
+    <div>
+        <h3>上传文件--多个</h3>
+        <form method='post' action='/api/remote/uploadfile' enctype='multipart/form-data'>
             <input type="file" name="inputFile">
+            <input type="file" name="headImg">
             <input type="submit" value="上传">
         </form>
     </div>
@@ -54,29 +62,31 @@
     function pageEventInit(){}
 
     function submit2(){
-    var data = new FormData($('#addForm')[0]);
-    ajaxFormPost("/api/remote/uploadfile",data,function(data){
-        console.log("multiparty处理结果:",data);
-        alert(data.code+":"+data.msg);
-    });
-}
-//ajax Post方法封装
-function ajaxFormPost(url,formData,callBack){
-    $.ajax({
-        type:'POST',
-        dataType:'text',
-        processData: false,  // 告诉JSLite不要去处理发送的数据
-        contentType: false,   // 告诉JSLite不要去设置Content-Type请求头
-        data:formData,
-        url:url,
-        success:function(data){
-            data = JSON.parse(data);
-            callBack(data);
-        },
-        error:function(data){
-            console.log('error:',data)
-            callBack(data);
-        }
-    });
-}
+        var data = new FormData($('#addForm')[0]);
+        ajaxFormPost("/api/remote/uploadfile",data,function(data){
+            console.log("multiparty处理结果:",data);
+            if(data && data.success==1){
+                console.log("成功");
+            }
+        });
+    }
+    //ajax Post方法封装
+    function ajaxFormPost(url,formData,callBack){
+        $.ajax({
+            type:'POST',
+            dataType:'text',
+            processData: false,  // 告诉JSLite不要去处理发送的数据
+            contentType: false,   // 告诉JSLite不要去设置Content-Type请求头
+            data:formData,
+            url:url,
+            success:function(data){
+                data = JSON.parse(data);
+                callBack(data);
+            },
+            error:function(data){
+                console.log('error:',data)
+                callBack(data);
+            }
+        });
+    }
 </script>

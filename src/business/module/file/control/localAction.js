@@ -210,23 +210,7 @@ exports.creatfile = (req,res) =>{
         resultMap(res,responseData);
     })
 }
-//TODO 
-exports.getFileList = (req,res) =>{
-    let responseData={};
-    let params = req.body;
-    let src=params.src;
 
-    if(!src){
-        resultMap(res,{msg:"参数错误"});
-        return;
-    }
-    src=decodeURI(src);
-
-    console.log(src);
-    //var filePath=obj.rootPath;
-    var result=fileHandle(req, res, obj, config);
-
-};
 
 exports.rename = (req,res) =>{
     let responseData={};
@@ -295,3 +279,23 @@ exports.delete = (req,res) =>{
         resultMap(res,responseData);
       })
 }
+//TODO 
+let dirList=require("../zutil/dirListSync");
+exports.getFileList = (req,res) =>{
+    let responseData={};
+    let params = req.body;
+    let src=params.src;
+
+    if(!src){
+        resultMap(res,{msg:"参数错误"});
+        return;
+    }
+    src=decodeURI(src);
+
+    console.log(src);
+    //var filePath=obj.rootPath;
+    //var result=fileHandle(req, res, obj, config);
+    let result=dirList.dirList(src);
+    resultMap(res,{msg:'',data:result});
+
+};

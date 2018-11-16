@@ -28,6 +28,7 @@
 <body>
     <div class="">
        <div>
+           <input type="button" value="文件列表" onclick="fileGetFileList()">
            <input type="button" value="复制" onclick="fileCopy()">
            <input type="button" value="打开" onclick="fileOpen()">
            <input type="button" value="移动" onclick="fileMove()">
@@ -64,6 +65,25 @@
 
     }
     
+    //
+    function fileGetFileList(params) {
+        $.post(_base.getContextPath()+"/file/getFileList",
+            {
+                src:encodeURI("D:/opt/JS_HTML格工具"),
+                dest:encodeURI("D:/opt/thumb")
+            },
+            function(data){
+                console.log(data);
+                if(data)
+                if(data.success==2){
+                    _common.Jalert(data.message);
+                }else if( data.success==1){
+                   // window.location.href='/index.html';
+                }else{
+                  //  window.location.reload();
+                }
+        });
+    }
     //下载/打开文件
     function fileOpen(params) {
         var  filePath=encodeURI('D:/opt/htmlUtil/JS_HTML格式化 - 站长工具.html');
